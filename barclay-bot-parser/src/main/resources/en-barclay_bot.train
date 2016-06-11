@@ -12,24 +12,24 @@ status how is today ?
 status how is it going ?
 statusreply fine
 statusreply good
-statusreply thanks 
-addresschangequery could you please help me in assisting change of my address ?
-addresschangequery how can i change my address ?
-addresschangequery i want to change my address
-addresschangequery can i change my communication address ?
-addresschangequery could you let me know procedure for changing my address ?
-addresschangequery can you assist me changing my address ?
-addresschangequery could you please assist changing my address ?
-phoneshowquery could you show my phone number ?
-phonechangequery could you please help me in assisting change of my phone number ?
-phonechangequery how can i change my phone number ?
-phonechangequery i want to change my phone number
-phonechangequery can i change my phone details ?
-phonechangequery could you let me know procedure for changing my phone number ?
-phonechangequery can you assist me changing my phone number ?
-emailchangequery could you please help me in assisting change of my email ?
-emailchangequery how can i change my email ?
-emailchangequery i want to change my email
-emailchangequery can i change my email address ?
-emailchangequery could you let me know procedure for changing my email ?
-emailchangequery can you assist me changing my email ?
+statusreply thanks
+addresschangequery  please help assisting change address
+addresschangequery  change address
+addresschangequery  change address
+addresschangequery  change communication address
+addresschangequery  let know procedure changing address
+addresschangequery  assist changing address
+addresschangequery  please assist changing address
+phoneshowquery  show phone number
+phonechangequery  please help assisting change phone number
+phonechangequery  change phone number
+phonechangequery  change phone number
+phonechangequery  change phone details
+phonechangequery  let know procedure changing phone number
+phonechangequery  assist changing phone number
+emailchangequery  please help assisting change
+emailchangequery  change email
+emailchangequery  change email
+emailchangequery  change email
+emailchangequery  let know procedure changing email
+emailchangequery  assist changing email
