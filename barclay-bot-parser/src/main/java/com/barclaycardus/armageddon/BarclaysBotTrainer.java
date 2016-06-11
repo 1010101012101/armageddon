@@ -1,21 +1,5 @@
 package com.barclaycardus.armageddon;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import opennlp.tools.doccat.DoccatModel;
 import opennlp.tools.doccat.DocumentCategorizerME;
 import opennlp.tools.doccat.DocumentSample;
@@ -23,12 +7,18 @@ import opennlp.tools.doccat.DocumentSampleStream;
 import opennlp.tools.util.ObjectStream;
 import opennlp.tools.util.PlainTextByLineStream;
 import opennlp.tools.util.TrainingParameters;
-
 import org.apache.commons.io.FileUtils;
+
+import java.io.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class BarclaysBotTrainer {
 	
-	public static String URL = "C:\\Users\\jyotik\\workspace\\barclay-bot-parser\\src\\main\\resources\\";
+	public static String URL = "G:\\Code\\armageddon\\armageddon\\barclay-bot-parser\\src\\main\\resources\\";
 	
 	public BarclaysBotTrainer() {
 		try{

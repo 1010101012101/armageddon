@@ -1,5 +1,12 @@
 package com.barclaycardus.armageddon;
 
+import opennlp.tools.doccat.DoccatModel;
+import opennlp.tools.doccat.DocumentCategorizerME;
+import opennlp.tools.sentdetect.SentenceDetectorME;
+import opennlp.tools.sentdetect.SentenceModel;
+import opennlp.tools.util.InvalidFormatException;
+import org.springframework.stereotype.Component;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,25 +14,23 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import opennlp.tools.doccat.DoccatModel;
-import opennlp.tools.doccat.DocumentCategorizerME;
-import opennlp.tools.sentdetect.SentenceDetectorME;
-import opennlp.tools.sentdetect.SentenceModel;
-import opennlp.tools.util.InvalidFormatException;
-
+@Component
 public class BarclayBotParser {
 
-	public static String URL = "C:\\Users\\jyotik\\workspace\\barclay-bot-parser\\src\\main\\resources\\";
+	public static String URL = "G:\\Code\\armageddon\\armageddon\\barclay-bot-parser\\src\\main\\resources\\";
 	DocumentCategorizerME classificationME;
 	JazzySpellChecker jazzySpellChecker;
 
-	public BarclayBotParser() throws Exception {
-		BarclaysBotTrainer barclaysBotTrainer = new BarclaysBotTrainer();
-		String classificationModelFilePath = URL + "en-barclay_bot.bin";
-		classificationME = new DocumentCategorizerME(new DoccatModel(
-				new FileInputStream(classificationModelFilePath)));
-		jazzySpellChecker = new JazzySpellChecker();
+	public BarclayBotParser() {
+		try {
+			BarclaysBotTrainer barclaysBotTrainer = new BarclaysBotTrainer();
+			String classificationModelFilePath = URL + "en-barclay_bot.bin";
+			classificationME = new DocumentCategorizerME(new DoccatModel(
+                    new FileInputStream(classificationModelFilePath)));
+			jazzySpellChecker = new JazzySpellChecker();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) throws Exception {

@@ -1,0 +1,23 @@
+package com.barclaycardus.armageddon;
+import com.barclaycardus.armageddon.QueryRequest;
+
+rule "Find Rule"
+when
+$request : QueryRequest()
+then
+if($request.getQuery().contains("addresschange")){
+System.out.println("************************************");
+    System.out.println($request.getQuery()+" is processed");
+   com.barclaycardus.armageddon.QueryResponse.setResponse("Please Provide your Address");
+}
+else if($request.getQuery().contains("phonechange")){
+    System.out.println("************************************");
+        System.out.println($request.getQuery()+" is processed");
+        com.barclaycardus.armageddon.QueryResponse.setResponse("Please Provide your Phone");
+}
+else{
+System.out.println("No Match");
+}
+end
+
+

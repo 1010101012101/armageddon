@@ -1,0 +1,5 @@
+rule "Address change"
+agenda-group "setAddress"
+then
+com.barclaycardus.armageddon.QueryResponse.setResponse("Please Provide your Address");
+end

@@ -5,7 +5,10 @@ import com.barclaycardus.armageddon.QueryResponse;
 import com.barclaycardus.armageddon.RuleEngine;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by Junaid on 11-Jun-16.
@@ -14,11 +17,14 @@ import org.springframework.web.bind.annotation.*;
 @EnableAutoConfiguration
 public class SentenceParserController {
 
+    BarclayBotParser barclayBotParser=new BarclayBotParser();
+
+
     @RequestMapping("/getAction/{sentence}")
     @ResponseBody
     String getAction(@PathVariable String sentence) {
         try {
-            String sentenceDetectorTrainer = BarclayBotParser.SentenceDetectorTrainer(sentence);
+            String sentenceDetectorTrainer = barclayBotParser.predictAction(sentence).get(0);
             String response = RuleEngine.getResponse(sentenceDetectorTrainer);
             QueryResponse.reset();
             return response;
