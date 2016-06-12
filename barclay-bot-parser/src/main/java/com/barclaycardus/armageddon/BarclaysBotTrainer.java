@@ -22,6 +22,8 @@ public class BarclaysBotTrainer {
 	
 	public BarclaysBotTrainer() {
 		try{
+			loadDictionary();
+			preProcess();
 			train();
 		}catch(Exception e){
 			throw new RuntimeException("Training failed");
@@ -102,8 +104,8 @@ public class BarclaysBotTrainer {
 		while ((line = br.readLine()) != null) {
 			String lowerCaseLine = line.toLowerCase();
 			String key = lowerCaseLine.substring(0, lowerCaseLine.indexOf(" "));
-			if(key.equalsIgnoreCase("Welcome") || key.equalsIgnoreCase("Status")){
-				fileWriter.write(lowerCaseLine + "\n");
+			if(key.startsWith("--")){
+				fileWriter.write(lowerCaseLine.substring(2) + "\n");
 				continue;
 			}
 			lowerCaseLine = lowerCaseLine.replaceFirst(key + " " , "");

@@ -1,18 +1,21 @@
-Welcome Hi
-Welcome Hello
-Welcome hey
-Welcome good morning
-Welcome good evening
-Welcome good day
-Welcome good night
-Welcome Greetings!
-Status how are you ?
-Status How are you doing ?
-Status How is today ?
-Status How is it going ?
-StatusReply Fine
-StatusReply good
-StatusReply thanks 
+--Welcome Hi
+--Welcome Hello
+--Welcome hey
+--Welcome good morning
+--Welcome good evening
+--Welcome good day
+--Welcome good night
+--Welcome Greetings!
+--Status how are you ?
+--Status How are you doing ?
+--Status How is today ?
+--Status How is it going ?
+--StatusReply Fine
+--StatusReply good
+--StatusReply thanks
+--EndConversation bye
+--EndConversation nothing bye
+--EndConversation see you
 AddressChangeQuery Could you please help me in assisting change of my address ?
 AddressChangeQuery How can I change my address ?
 AddressChangeQuery I want to change my address

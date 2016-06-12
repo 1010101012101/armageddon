@@ -1,22 +1,111 @@
 package com.barclaycardus.armageddon;
-import com.barclaycardus.armageddon.QueryRequest;
-
+import com.barclaycardus.armageddon.controller.Communication;
+import com.barclaycardus.armageddon.controller.validator.ContentValidator;
 rule "Find Rule"
 when
-$request : QueryRequest()
+$request : Communication()
 then
-if($request.getQuery().contains("addresschange")){
-System.out.println("************************************");
-    System.out.println($request.getQuery()+" is processed");
-   com.barclaycardus.armageddon.QueryResponse.setResponse("Please Provide your Address");
-}
-else if($request.getQuery().contains("phonechange")){
-    System.out.println("************************************");
-        System.out.println($request.getQuery()+" is processed");
-        com.barclaycardus.armageddon.QueryResponse.setResponse("Please Provide your Phone");
-}
-else{
-System.out.println("No Match");
+if("welcome".equals($request.getAction())){
+    $request.setReply("Hello. Welcome to Barclays chat. Let me know how I can help you today?");
+}else if("status".equals($request.getAction())){
+    $request.setReply("Doing great. Thanks for asking. How I can help you?");
+}else if("statusreply".equals($request.getAction())){
+     $request.setReply("Great. How can I help you?");
+}else if("endconversation".equals($request.getAction())){
+      $request.setReply("Have a nice day.");
+ }else if($request.getPreviousCommunication()!=null){
+    if(!"INVALID".equals($request.getAction())){
+        $request.setPreviousCommunication(null);
+        update($request);
+    }else if("CONFIRM_EXIT".equals($request.getPreviousCommunication().getAction())){
+        if($request.getContent().toLowerCase().contains("no")){
+            $request.setReply("Thanks for using chatbot. Have a nice day.");
+        }else{
+             $request.setReply("Please let me know how can I assist you.");
+        }
+    }else if("CONFIRMATION_PHONE".equals($request.getPreviousCommunication().getAction())){
+         if($request.getContent().toLowerCase().contains("no")){
+             $request.setReply("Sorry. Is ther anything I can help you?");
+         }else{
+              $request.setReply("Phone update successful.");
+         }
+     }else if("CONFIRMATION_EMAIL".equals($request.getPreviousCommunication().getAction())){
+               if($request.getContent().toLowerCase().contains("no")){
+                   $request.setReply("Sorry. Is ther anything I can help you?");
+               }else{
+                    $request.setReply("Email update successful.");
+               }
+       }else if("CONFIRMATION_ADDRESS".equals($request.getPreviousCommunication().getAction())){
+           if($request.getContent().toLowerCase().contains("no")){
+               $request.setReply("Sorry. Is ther anything I can help you?");
+           }else{
+                $request.setReply("Address update successful.");
+           }
+     }else if($request.getPreviousCommunication().getAction().contains("addresschangequery")){
+        if(!ContentValidator.validateAddress($request.getContent())){
+            $request.setReply("Please proide valid address");
+            $request.setAction("addresschangequery");
+        }else{
+            System.out.println("validating input provided is processed");
+             System.out.println("setting provided address is processed");
+             $request.setReply("Thank you for using bot. Do you want any other assistance");
+             $request.setAction("CONFIRM_EXIT");
+         }
+    }else if($request.getPreviousCommunication().getAction().contains("phonechangequery")){
+         if(!ContentValidator.validatePhone($request.getContent())){
+             $request.setReply("Please proide valid phone number");
+             $request.setAction("phonechangequery");
+         }else{
+             System.out.println("validating input provided is processed");
+              System.out.println("setting provided phone is processed");
+              $request.setReply("Thank you for using bot. Do you want any other assistance");
+              $request.setAction("CONFIRM_EXIT");
+          }
+     }else if($request.getPreviousCommunication().getAction().contains("phonechangequery")){
+           if(!ContentValidator.validatePhone($request.getContent())){
+               $request.setReply("Please proide valid phone number");
+               $request.setAction("phonechangequery");
+           }else{
+               System.out.println("validating input provided is processed");
+                System.out.println("setting provided phone is processed");
+                $request.setReply("Thank you for using bot. Do you want any other assistance");
+                $request.setAction("CONFIRM_EXIT");
+            }
+    }else{
+        $request.setReply("Sorry. Could please provide more details or try to rephrase the query.");
+    }
+}else if($request.getAction().contains("addresschangequery")){
+    String address = ContentValidator.containsAddress($request.getContent());
+    if(!"".equals(address)){
+        $request.setReply("Please confirm your address change request for " + address + ".");
+        $request.setAction("CONFIRMATION_ADDRESS");
+    }else{
+        System.out.println("************************************");
+        System.out.println($request.getAction()+" is processed");
+        $request.setReply("Please Provide your Address");
+     }
+}else if($request.getAction().contains("phonechangequery")){
+        String phoneNo = ContentValidator.containsPhone($request.getContent());
+        if(!"".equals(phoneNo)){
+            $request.setReply("Please confirm your phone number change request for " + phoneNo + ".");
+            $request.setAction("CONFIRMATION_PHONE");
+        }else{
+            System.out.println("************************************");
+            System.out.println($request.getAction()+" is processed");
+            $request.setReply("Please Provide your Phone");
+            }
+}else if($request.getAction().contains("emailchangequery")){
+        String email = ContentValidator.containsEmail($request.getContent());
+        if(!"".equals(email)){
+            $request.setReply("Please confirm your email change request for " + email + ".");
+            $request.setAction("CONFIRMATION_EMAIL");
+        }else{
+             System.out.println("************************************");
+             System.out.println($request.getAction()+" is processed");
+             $request.setReply("Please Provide your email");
+         }
+ }else{
+    $request.setReply("Sorry. Could please provide more details or try to rephrase the query.");
 }
 end
 

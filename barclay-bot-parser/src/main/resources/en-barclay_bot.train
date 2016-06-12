@@ -13,6 +13,9 @@ status how is it going ?
 statusreply fine
 statusreply good
 statusreply thanks
+endconversation bye
+endconversation nothing bye
+endconversation see you
 addresschangequery  please help assisting change address
 addresschangequery  change address
 addresschangequery  change address

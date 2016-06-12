@@ -1,5 +1,6 @@
 package com.barclaycardus.armageddon;
 
+import com.barclaycardus.armageddon.controller.Communication;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -16,15 +17,9 @@ public class RuleEngine {
         kSession = kContainer.newKieSession("ksession-rules");
     }
 
-    public static String getResponse(String action){
+    public static void populateRespose(Communication communication){
         QueryRequest queryRequest=new QueryRequest();
-        queryRequest.setQuery(action);
-        kSession.insert(queryRequest);
-        System.out.println("************* Fire Rules **************");
+        kSession.insert(communication);
         kSession.fireAllRules();
-        System.out.println("************************************");
-        String response = QueryResponse.getResponse();
-        System.out.println("response " + response);
-        return response;
     }
 }
