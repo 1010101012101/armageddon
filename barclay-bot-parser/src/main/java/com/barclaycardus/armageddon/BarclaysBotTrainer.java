@@ -18,22 +18,17 @@ import java.util.regex.Pattern;
 
 public class BarclaysBotTrainer {
 	
-	public static String URL = "G:\\Code\\armageddon\\armageddon\\barclay-bot-parser\\src\\main\\resources\\";
-	
 	public BarclaysBotTrainer() {
 		try{
-			loadDictionary();
 			preProcess();
 			train();
 		}catch(Exception e){
+			e.printStackTrace();
 			throw new RuntimeException("Training failed");
 		}
 	}
 	public void train() throws Exception{
-			DoccatModel model = null;
-
-			InputStream dataIn = null;
-			dataIn = new FileInputStream(URL + "en-barclay_bot.train");
+			InputStream dataIn = BarclaysBotUtil.getFileAsInputStream("en-barclay_bot.train");
 			ObjectStream<String> lineStream = new PlainTextByLineStream(dataIn,
 					"UTF-8");
 			ObjectStream<DocumentSample> sampleStream = new DocumentSampleStream(
@@ -42,32 +37,24 @@ public class BarclaysBotTrainer {
 			TrainingParameters trainingParameters = new TrainingParameters();
 			trainingParameters.put(TrainingParameters.CUTOFF_PARAM, "1");
 			System.out.println(trainingParameters.getSettings());
-			model = DocumentCategorizerME.train("en", sampleStream,trainingParameters);
+			DoccatModel model  = DocumentCategorizerME.train("en", sampleStream,trainingParameters);
 			dataIn.close();
 			OutputStream modelOut = null;
-			modelOut = new BufferedOutputStream(new FileOutputStream(URL + "en-barclay_bot.bin"));
+			modelOut = new BufferedOutputStream(BarclaysBotUtil.getFileAsOutputStream("en-barclay_bot.bin"));
 			model.serialize(modelOut);
 	}
 	
 	public void loadDictionary() throws Exception{
-		FileUtils.copyFile(new File(BarclayBotParser.URL
-				+ "base_dictionary.txt"), new File(BarclayBotParser.URL
-				+ "dictionary.txt"));
-		addWordsFromTrainingData(BarclayBotParser.URL + "en-barclay_bot.train",
-				BarclayBotParser.URL + "dictionary.txt");
+		FileUtils.copyFile(BarclaysBotUtil.getFile("base_dictionary.txt"), BarclaysBotUtil.getFile("dictionary.txt"));
+		addWordsFromTrainingData("en-barclay_bot.train","dictionary.txt");
 	}
 	
 	public void addWordsFromTrainingData(String inputFile, String outputFile)
 			throws Exception {
-
-		FileInputStream fis = null;
-		DataInputStream dis = null;
-		BufferedReader br = null;
-		FileWriter fileWriter = new FileWriter(new File(outputFile), true);
+		FileWriter fileWriter = new FileWriter(BarclaysBotUtil.getFile(outputFile), true);
 		Set<String> words = new HashSet<String>();
-		fis = new FileInputStream(inputFile);
-		dis = new DataInputStream(fis);
-		br = new BufferedReader(new InputStreamReader(dis));
+		DataInputStream dis = new DataInputStream(BarclaysBotUtil.getFileAsInputStream(inputFile));
+		BufferedReader br = new BufferedReader(new InputStreamReader(dis));
 		String line = null;
 		while ((line = br.readLine()) != null) {
 			StringTokenizer st = new StringTokenizer(line, " ,.;:\"");
@@ -87,19 +74,14 @@ public class BarclaysBotTrainer {
 
 	
 	public void preProcess() throws Exception{
-		convertToSmall(BarclayBotParser.URL + "en-base_barclay_bot.train", BarclayBotParser.URL + "en-barclay_bot.train");
+		loadDictionary();
+		convertToSmall("en-base_barclay_bot.train", "en-barclay_bot.train");
 	}
 	
 	public void convertToSmall(String inputFile, String outputFile)
 			throws Exception {
-
-		FileInputStream fis = null;
-		DataInputStream dis = null;
-		BufferedReader br = null;
-		FileWriter fileWriter = new FileWriter(new File(outputFile));
-		fis = new FileInputStream(inputFile);
-		dis = new DataInputStream(fis);
-		br = new BufferedReader(new InputStreamReader(dis));
+		FileWriter fileWriter = new FileWriter(BarclaysBotUtil.getFile(outputFile));
+		BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(new FileInputStream(BarclaysBotUtil.getFile(inputFile)))));
 		String line = null;
 		while ((line = br.readLine()) != null) {
 			String lowerCaseLine = line.toLowerCase();

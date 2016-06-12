@@ -1,0 +1,4 @@
+PREMIUM_CARD With barclay's premium credit card you’ll be charged a 3.5% fee, but transfer balance within 60 days and will refund 1.05%, so the effective fee is 2.45%
+TRAVEL_CARD Barclay's travel card which has association with number of airlines which gives great discounts on your tickets and also provide reward point
+APPLE_CARD Barclay's apple card which gives great discounts on apple store and apple products and also provide great benefits on purchase online through apple pay store
+ONLINE_CARD Barclays online card provides great discounts and rewards when you shop online and also provides great user support and reduced interest on emi.

@@ -1,6 +1,8 @@
 package com.barclaycardus.armageddon;
 import com.barclaycardus.armageddon.controller.Communication;
 import com.barclaycardus.armageddon.controller.validator.ContentValidator;
+import com.barclaycardus.armageddon.BarclaysBotUtil;
+
 rule "Find Rule"
 when
 $request : Communication()
@@ -13,7 +15,9 @@ if("welcome".equals($request.getAction())){
      $request.setReply("Great. How can I help you?");
 }else if("endconversation".equals($request.getAction())){
       $request.setReply("Have a nice day.");
- }else if($request.getPreviousCommunication()!=null){
+ }else if($request.getAction().contains("suggestion")){
+        $request.setReply(BarclaysBotUtil.card_map.get($request.getAction()));
+}else if($request.getPreviousCommunication()!=null){
     if(!"INVALID".equals($request.getAction())){
         $request.setPreviousCommunication(null);
         update($request);
@@ -27,18 +31,21 @@ if("welcome".equals($request.getAction())){
          if($request.getContent().toLowerCase().contains("no")){
              $request.setReply("Sorry. Is ther anything I can help you?");
          }else{
+              $request.setAction("CONFIRMED_PHONE");
               $request.setReply("Phone update successful.");
          }
      }else if("CONFIRMATION_EMAIL".equals($request.getPreviousCommunication().getAction())){
                if($request.getContent().toLowerCase().contains("no")){
                    $request.setReply("Sorry. Is ther anything I can help you?");
                }else{
+                    $request.setAction("CONFIRMED_EMAIL");
                     $request.setReply("Email update successful.");
                }
        }else if("CONFIRMATION_ADDRESS".equals($request.getPreviousCommunication().getAction())){
            if($request.getContent().toLowerCase().contains("no")){
                $request.setReply("Sorry. Is ther anything I can help you?");
            }else{
+                $request.setAction("CONFIRMED_ADDRESS");
                 $request.setReply("Address update successful.");
            }
      }else if($request.getPreviousCommunication().getAction().contains("addresschangequery")){
@@ -48,8 +55,8 @@ if("welcome".equals($request.getAction())){
         }else{
             System.out.println("validating input provided is processed");
              System.out.println("setting provided address is processed");
-             $request.setReply("Thank you for using bot. Do you want any other assistance");
-             $request.setAction("CONFIRM_EXIT");
+             $request.setAction("CONFIRMED_ADDRESS");
+             $request.setReply("Address update successful.");
          }
     }else if($request.getPreviousCommunication().getAction().contains("phonechangequery")){
          if(!ContentValidator.validatePhone($request.getContent())){
@@ -57,19 +64,19 @@ if("welcome".equals($request.getAction())){
              $request.setAction("phonechangequery");
          }else{
              System.out.println("validating input provided is processed");
+             $request.setAction("CONFIRMED_PHONE");
               System.out.println("setting provided phone is processed");
-              $request.setReply("Thank you for using bot. Do you want any other assistance");
-              $request.setAction("CONFIRM_EXIT");
+              $request.setReply("Phone update successful.");
           }
-     }else if($request.getPreviousCommunication().getAction().contains("phonechangequery")){
-           if(!ContentValidator.validatePhone($request.getContent())){
-               $request.setReply("Please proide valid phone number");
-               $request.setAction("phonechangequery");
+     }else if($request.getPreviousCommunication().getAction().contains("emailchangequery")){
+           if(!ContentValidator.validateEmail($request.getContent())){
+               $request.setReply("Please proide valid email");
+               $request.setAction("emailchangequery");
            }else{
                System.out.println("validating input provided is processed");
-                System.out.println("setting provided phone is processed");
-                $request.setReply("Thank you for using bot. Do you want any other assistance");
-                $request.setAction("CONFIRM_EXIT");
+                System.out.println("setting provided email is processed");
+                $request.setAction("CONFIRMED_EMAIL");
+                $request.setReply("Email update successful.");
             }
     }else{
         $request.setReply("Sorry. Could please provide more details or try to rephrase the query.");
@@ -82,7 +89,7 @@ if("welcome".equals($request.getAction())){
     }else{
         System.out.println("************************************");
         System.out.println($request.getAction()+" is processed");
-        $request.setReply("Please Provide your Address");
+        $request.setReply("Sure. Please Provide address which has to be updated");
      }
 }else if($request.getAction().contains("phonechangequery")){
         String phoneNo = ContentValidator.containsPhone($request.getContent());
@@ -92,7 +99,7 @@ if("welcome".equals($request.getAction())){
         }else{
             System.out.println("************************************");
             System.out.println($request.getAction()+" is processed");
-            $request.setReply("Please Provide your Phone");
+            $request.setReply("Sure. Please Provide your Phone number to be changed");
             }
 }else if($request.getAction().contains("emailchangequery")){
         String email = ContentValidator.containsEmail($request.getContent());
@@ -102,7 +109,7 @@ if("welcome".equals($request.getAction())){
         }else{
              System.out.println("************************************");
              System.out.println($request.getAction()+" is processed");
-             $request.setReply("Please Provide your email");
+             $request.setReply("Sure. Please Provide your new email to be changed");
          }
  }else{
     $request.setReply("Sorry. Could please provide more details or try to rephrase the query.");

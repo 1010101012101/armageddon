@@ -5,6 +5,8 @@ package com.barclaycardus.armageddon.controller;
  */
 public class Communication {
 
+    String userId;
+    String sessionId;
     String action;
     String content;
     String reply;
@@ -45,5 +47,21 @@ public class Communication {
 
     public void setReply(String reply) {
         this.reply = reply;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 }

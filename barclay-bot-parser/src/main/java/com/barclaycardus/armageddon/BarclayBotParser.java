@@ -7,7 +7,6 @@ import opennlp.tools.sentdetect.SentenceModel;
 import opennlp.tools.util.InvalidFormatException;
 import org.springframework.stereotype.Component;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -17,16 +16,13 @@ import java.util.Set;
 @Component
 public class BarclayBotParser {
 
-	public static String URL = "G:\\Code\\armageddon\\armageddon\\barclay-bot-parser\\src\\main\\resources\\";
 	DocumentCategorizerME classificationME;
 	JazzySpellChecker jazzySpellChecker;
 
 	public BarclayBotParser() {
 		try {
 			BarclaysBotTrainer barclaysBotTrainer = new BarclaysBotTrainer();
-			String classificationModelFilePath = URL + "en-barclay_bot.bin";
-			classificationME = new DocumentCategorizerME(new DoccatModel(
-                    new FileInputStream(classificationModelFilePath)));
+			classificationME = new DocumentCategorizerME(new DoccatModel(BarclaysBotUtil.getFileAsInputStream("en-barclay_bot.bin")));
 			jazzySpellChecker = new JazzySpellChecker();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -42,24 +38,21 @@ public class BarclayBotParser {
 	public List<String> predictAction(String statement) throws Exception {
 		List<String> predictions = new ArrayList<String>();
 		statement = jazzySpellChecker.getCorrectedLine(statement.toLowerCase());
-		String[] sentences = sentenceDetect(statement);
-		for (String sentence : sentences) {
-			double[] classDistributions = classificationME.categorize(sentence);
-			if (isClassDistributionsValid(classDistributions)) {
-				String predictedCategory = classificationME
-						.getBestCategory(classDistributions);
-				predictions.add(predictedCategory);
-			} else {
-				predictions.add("INVALID");
-			}
-			System.out.println("Model prediction : " + predictions);
+		double[] classDistributions = classificationME.categorize(statement);
+		if (isClassDistributionsValid(classDistributions)) {
+			String predictedCategory = classificationME
+					.getBestCategory(classDistributions);
+			predictions.add(predictedCategory);
+		} else {
+			predictions.add("INVALID");
 		}
+		System.out.println("Model prediction : " + predictions);
 		return predictions;
 	}
 	
 	public String[] sentenceDetect(String paragraph)
 			throws InvalidFormatException, IOException {
-		InputStream is = new FileInputStream(URL + "en-sent.bin");
+		InputStream is = BarclaysBotUtil.getFileAsInputStream("en-sent.bin");
 		SentenceModel model = new SentenceModel(is);
 		SentenceDetectorME sdetector = new SentenceDetectorME(model);
 

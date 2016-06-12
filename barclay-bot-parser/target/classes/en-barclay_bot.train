@@ -13,6 +13,9 @@ status how is it going ?
 statusreply fine
 statusreply good
 statusreply thanks
+endconversation bye
+endconversation nothing bye
+endconversation see you
 addresschangequery  please help assisting change address
 addresschangequery  change address
 addresschangequery  change address
@@ -33,3 +36,7 @@ emailchangequery  change email
 emailchangequery  change email
 emailchangequery  let know procedure changing email
 emailchangequery  assist changing email
+suggestionpremiumquery  suggest barclay card interest rate premium
+suggestiontravelquery  suggest card suggest suits travel lot
+suggestionapplequery  barclay card suggest shopping apple products
+suggestiononlinequery  suggest card suggest benefits shopping online interest rates emi

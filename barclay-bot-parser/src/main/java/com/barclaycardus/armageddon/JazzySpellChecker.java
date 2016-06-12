@@ -33,9 +33,8 @@ public class JazzySpellChecker implements SpellCheckListener {
  private static SpellDictionaryHashMap dictionaryHashMap;
   
  static{
-  File dict = new File(BarclayBotParser.URL + "dictionary.txt");
   try {
-	  dictionaryHashMap = new SpellDictionaryHashMap(dict);
+	  dictionaryHashMap = new SpellDictionaryHashMap(BarclaysBotUtil.getFile("dictionary.txt"));
   } catch (FileNotFoundException e) {
    e.printStackTrace();
   } catch (IOException e) {
